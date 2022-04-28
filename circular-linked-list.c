@@ -186,7 +186,26 @@ int insertFirst(listNode* h, int key){
 }
 
 int deleteFirst(listNode* h){
+    if (h->llink == NULL) // 공백 리스트의 경우
+    {
+        printf("List is Empty!!! \n");
+        return 0;
+    }
 
+    if(h->llink == h->rlink){ // 노드가 1개인 리스트
+        free(h->llink);
+        h->llink = NULL;
+        h->rlink = NULL;
+        return 0;
+    }
+
+    listNode* p = h->rlink;
+
+    p->rlink->llink = h; // 새 첫 노드의 llink는 헤더노드를 가리킴
+    h->rlink = p->rlink; // 헤더노드의 rlink는 새 첫 노드를 가리킴
+    free(p);
+
+    return 0;
 }
 
 int invertList(listNode* h){
