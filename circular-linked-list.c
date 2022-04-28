@@ -125,7 +125,20 @@ int freeList(listNode *h){
 }
 
 int insertLast(listNode* h, int key){
+    listNode* p = createNode(key);
+
+     if(h->llink==NULL){ //공백 리스트의 경우
+        h->llink = h->rlink = p; // 처음이자 마지막 노드이므로, 헤더의 두 링크가 모두 가리킴
+        p->llink = p->rlink = h; // 처음이자 마지막 노드이므로, 노드의 링크는 모두 헤더를 가리킴
+        return 0;
+    }
     
+    p->llink = h->llink; // 삽입될 노드의 llink는 기존 마지막 노드를 가리킴
+    h->llink->rlink = p; // 기존 마지막 노드의 rlink는 삽입될 노드를 가리킴
+    p->rlink = h;        // 삽입될 노드의 rlink는 헤더노드를 가리킴
+    h->llink = p;        // 헤더노드의 llink는 삽입될 노드를 가리킴
+
+    return 0;
 }
 
 int deleteLast(listNode*h){
@@ -135,7 +148,7 @@ int deleteLast(listNode*h){
 int insertFirst(listNode* h, int key){
     listNode* p = createNode(key);
 
-    if(h->llink==NULL){
+    if(h->llink==NULL){ //공백 리스트의 경우
         h->llink = h->rlink = p; // 처음이자 마지막 노드이므로, 헤더의 두 링크가 모두 가리킴
         p->llink = p->rlink = h; // 처음이자 마지막 노드이므로, 노드의 링크는 모두 헤더를 가리킴
         return 0;
