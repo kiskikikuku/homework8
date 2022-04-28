@@ -213,7 +213,41 @@ int invertList(listNode* h){
 }
 
 int insertNode(listNode* h, int key){
+    listNode* n = createNode(key);
 
+    if(h->llink == NULL){ //공백 리스트
+        insertFirst(h, key);
+        return 0;
+    }
+
+    listNode* p = h->rlink;
+
+    if(n->key <= p->key && n->llink == n->rlink){ //노드가 1개인 리스트의 맨 앞에 삽입하는 경우
+        insertFirst(h, key);
+        return 0;
+    }
+
+
+    while(p->rlink != h){
+        
+        if(n->key <= p->key){ // 삽입 위치 발견
+            if(p->llink == h){ // 첫번째 위치인 경우
+                insertFirst(h, key);
+                return 0;
+            }
+
+            p->llink->rlink  = n;
+            n->llink = p->llink;
+            n->rlink = p;
+            p->llink = n;
+            return 0;  
+        }
+
+        p = p->rlink;
+    }
+
+    insertLast(h, key);
+    return 0;
 }
 
 int deleteNode(listNode* h, int key){
