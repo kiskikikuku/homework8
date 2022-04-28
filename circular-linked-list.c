@@ -116,10 +116,6 @@ int freeList(listNode *h){
 
     while(p->key != -9999){
         p = p->rlink;
-        if(p == h){
-            free(p->rlink);
-            break; //헤드에 도달하면 rlink를 해제해야함(마지막 노드)
-        }
         free(p->llink); // 헤드까지 p가 이동하며 이전 노드를 해제
     }
 
@@ -138,12 +134,19 @@ int deleteLast(listNode*h){
 
 int insertFirst(listNode* h, int key){
     listNode* p = createNode(key);
-    
+
     if(h->llink==NULL){
-        h->llink = p;
-        p->llink = p; 
-        p->rlink = p; // 노드가 한개, link는 자기 자신을 가리킨다.       
+        h->llink = h->rlink = p; // 처음이자 마지막 노드이므로, 헤더의 두 링크가 모두 가리킴
+        p->llink = p->rlink = h; // 처음이자 마지막 노드이므로, 노드의 링크는 모두 헤더를 가리킴
+        return 0;
     }
+
+    h->rlink->llink = p; // 기존의 첫 노드의 llink가 삽입될 노드를 가리킴
+    p->rlink = h->rlink; // p의 rlink는 기존의 첫노드를 가리킴
+    h->rlink = p; // 첫 노드로 삽입, 헤더노드의 rlink가 가리킴
+    p->llink = h; // 첫 노드의 llink는 헤더노드를 가리킴
+
+    return 0;
 }
 
 int deleteFirst(listNode* h){
