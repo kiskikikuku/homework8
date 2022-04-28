@@ -142,7 +142,30 @@ int insertLast(listNode* h, int key){
 }
 
 int deleteLast(listNode*h){
+    if (h->llink == NULL) // 공백 리스트의 경우
+    {
+        printf("List is Empty!!! \n");
+        return 0;
+    }
 
+    if(h->llink == h->rlink){ // 노드가 1개인 리스트
+        free(h->llink);
+        h->llink = NULL;
+        h->rlink = NULL;
+        return 0;
+    }
+
+    listNode* p = h->rlink;
+
+    while(p->rlink != h){ //p가 마지막 노드를 가리킬 때 까지 이동
+        p = p->rlink;
+    }
+
+    p->llink->rlink = h; //삭제될 노드의 이전 노드가 헤드를 가리킴(새 마지막 노드)
+    h->llink = p->llink; // 헤드노드의 llink가 새 마지막 노드를 가리킴
+    free(p);
+
+    return 0;
 }
 
 int insertFirst(listNode* h, int key){
