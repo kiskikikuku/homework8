@@ -251,7 +251,37 @@ int insertNode(listNode* h, int key){
 }
 
 int deleteNode(listNode* h, int key){
+    if (h->llink == NULL) // 공백 리스트의 경우
+    {
+        printf("List is Empty!!! \n");
+        return 0;
+    }
 
+    listNode* p = h->rlink; // 첫 노드부터 탐색
+
+    while(p->key != -9999){
+
+        if(p->key == key){// key값과 같은 노드 발견
+            if(p->llink == h){ // p의 llink가 헤드노드를 가리킴 (첫 노드인경우)
+                deleteFirst(h);
+                return 0;
+            }
+
+            if(p->rlink == h){ // p의 rlink가 헤드노드를 가리킴 (마지막 노드인 경우)
+                deleteLast(h);
+                return 0;
+            }
+
+            p->llink->rlink = p->rlink;
+            p->rlink->llink = p->llink;
+            free(p);
+            return 0;
+        }
+        p = p->rlink;
+    }
+
+    printf("Can't find value %d \n", key);
+    return 0;
 }
 
 void printList(listNode* h){
