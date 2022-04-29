@@ -151,7 +151,7 @@ int deleteLast(listNode*h){
     if(h->llink == h->rlink){ // 노드가 1개인 리스트
         free(h->llink);
         h->llink = NULL;
-        h->rlink = NULL;
+        h->rlink = NULL; //삭제
         return 0;
     }
 
@@ -195,7 +195,7 @@ int deleteFirst(listNode* h){
     if(h->llink == h->rlink){ // 노드가 1개인 리스트
         free(h->llink);
         h->llink = NULL;
-        h->rlink = NULL;
+        h->rlink = NULL; // 삭제
         return 0;
     }
 
@@ -342,10 +342,10 @@ void printList(listNode* h){
 
 listNode* createNode(int key){
     
-    listNode* n = (listNode*)malloc(sizeof(listNode));
+    listNode* n = (listNode*)malloc(sizeof(listNode)); // 노드 생성
     n->key = key;
     n->llink = NULL;
-    n->rlink = NULL;
+    n->rlink = NULL; // 초기화
 
     return n;
-}
+} // key를 key값으로 갖는 노드 생성함수
