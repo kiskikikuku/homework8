@@ -209,7 +209,28 @@ int deleteFirst(listNode* h){
 }
 
 int invertList(listNode* h){
+    if(h->rlink == NULL || (h->rlink->rlink == h)){ // 공백이거나 노드가 1개인 경우
+        printf("List is Empty or has only one node \n");
+        return 0;
+    }
 
+    listNode* current = h->rlink; // 현재 노드 (반전 실행되는 노드)
+    listNode* post = current->rlink; // 다음 노드
+    listNode* trail = h; // 이전 노드
+
+    while(current->key != -9999){ //current가 헤드에 도달할 때 까지
+        current->llink = current->rlink;
+        current->rlink = trail; // 좌 /우 link 반전
+
+        trail = current;
+        current = post;
+        post = post->rlink; // 노드 포인터들 한칸씩 우로 이동
+    }
+
+    current->llink = current->rlink; // 헤드 노드에서도 링크 바꿔줌
+    current->rlink = trail;
+
+    return 0;
 }
 
 int insertNode(listNode* h, int key){
@@ -239,14 +260,14 @@ int insertNode(listNode* h, int key){
             p->llink->rlink  = n;
             n->llink = p->llink;
             n->rlink = p;
-            p->llink = n;
+            p->llink = n; // 노드 삽입
             return 0;  
         }
 
-        p = p->rlink;
+        p = p->rlink; // 다음노드로 링크 이동
     }
 
-    insertLast(h, key);
+    insertLast(h, key); //삽입위치 발견 못함 -> 최댓값 -> 마지막 위치에 삽입
     return 0;
 }
 
@@ -272,15 +293,15 @@ int deleteNode(listNode* h, int key){
                 return 0;
             }
 
-            p->llink->rlink = p->rlink;
-            p->rlink->llink = p->llink;
-            free(p);
+            p->llink->rlink = p->rlink; // 삭제될 노드 다음 노드의 llink 변경
+            p->rlink->llink = p->llink; // 삭제될 노드 이전 노드의 rlink 변경
+            free(p);                    // 노드 삭제(할당 해제)
             return 0;
         }
-        p = p->rlink;
+        p = p->rlink; // 다음 노드로 링크 이동
     }
 
-    printf("Can't find value %d \n", key);
+    printf("Can't find value %d \n", key); // 삭제하려는 key값의 노드가 존재하지 않음
     return 0;
 }
 
